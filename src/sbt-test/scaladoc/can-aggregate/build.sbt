@@ -30,11 +30,11 @@ lazy val siteWithScaladoc = project.in(file("site/scaladoc"))
 //#scaladoc-site
 
 //#scaladoc-site-alternative
-lazy val scaladocSiteProjects = List(cats, kittens)
+lazy val scaladocSiteProjects = List((cats, Cats), (kittens, Kittens))
 
-lazy val scaladocSiteSettings = scaladocSiteProjects.flatMap { project =>
+lazy val scaladocSiteSettings = scaladocSiteProjects.flatMap { case (project, conf) =>
   SiteScaladocPlugin.scaladocSettings(
-    config(project.id),
+    conf,
     mappings in (Compile, packageDoc) in project,
     s"api/${project.id}"
   )
