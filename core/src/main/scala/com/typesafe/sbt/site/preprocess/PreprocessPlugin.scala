@@ -112,7 +112,7 @@ object PreprocessPlugin extends AutoPlugin {
         Set.empty
       }
     }
-    val sources = (sourceDir ** AllPassFilter).get.toSet
+    val sources = (sourceDir ** AllPassFilter).get().toSet
     runTransform(sources)
     targetDir
   }

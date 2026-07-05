@@ -6,6 +6,8 @@ import com.typesafe.sbt.site.{Compat, SitePlugin}
 import com.typesafe.sbt.site.Compat._
 import sbt.Keys._
 import sbt._
+import xsbti.HashedVirtualFileRef
+
 /**
  * Utility/support functions.
  */
@@ -13,7 +15,7 @@ object SiteHelpers {
   import SitePlugin.autoImport.siteMappings
   /** Convenience functions to add a task of mappings to a site under a nested directory. */
   def addMappingsToSiteDir(
-    mappings: Def.Initialize[Task[Seq[(File, String)]]],
+    mappings: Def.Initialize[Task[Seq[(HashedVirtualFileRef, String)]]],
     nestedDirectory: SettingKey[String]): Setting[?] =
     siteMappings ++= {
       for ((f, d) <- mappings.value) yield (f, nestedDirectory.value + "/" + d)

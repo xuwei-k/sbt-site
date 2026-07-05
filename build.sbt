@@ -19,7 +19,15 @@ inThisBuild(Seq(
 
 val pluginSettings = Seq(
   sbtPlugin := true,
-  crossSbtVersions := List("1.9.7"),
+  crossScalaVersions += "3.8.4",
+  pluginCrossBuild / sbtVersion := {
+    scalaBinaryVersion.value match {
+      case "2.12" =>
+        "1.9.7"
+      case "3" =>
+        "2.0.4"
+    }
+  },
   scriptedLaunchOpts += "-Dproject.version=" + version.value
   // scriptedBufferLog := false
 )
@@ -30,9 +38,18 @@ val commonSettings = Seq(
     "-unchecked",
     "-encoding",
     "UTF-8",
-    "-release",
-    "11"
-  )
+  ),
+  scalacOptions ++= {
+    scalaBinaryVersion.value match {
+      case "2.12" =>
+        Seq(
+          "-release",
+          "11"
+        )
+      case "3" =>
+        Nil
+    }
+  }
 )
 
 val unfilteredVersion = "0.12.0"
@@ -127,7 +144,7 @@ lazy val paradox = project
   .in(file("paradox"))
   .settings(
     name := "sbt-site-paradox",
-    addSbtPlugin("com.lightbend.paradox" % "sbt-paradox" % "0.10.6")
+    addSbtPlugin("com.lightbend.paradox" % "sbt-paradox" % "0.11.0-M4")
   )
   .dependsOn(core)
   .enablePlugins(SbtPlugin)
